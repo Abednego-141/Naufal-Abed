@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Interaktif - Pendidikan Keberlanjutan</title>
+    
+    <!-- Google Fonts - Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .fade-in-delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .fade-in-delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .fade-in-delay-3 {
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Card Animations */
+        .lesson-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .lesson-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .card-icon {
+            transition: all 0.3s ease;
+        }
+        
+        /* Progress Bar */
+        .progress-segment {
+            transition: all 0.5s ease;
+        }
+        
+        .progress-segment.completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .progress-segment.active {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            animation: pulse 2s infinite;
+        }
+        
+        /* Micro Interactions */
+        .btn-eco {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-eco::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-eco:hover::before {
+            left: 100%;
+        }
+        
+        .btn-eco:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-eco:active {
+            transform: translateY(0);
+        }
+        
+        /* Hero Gradient */
+        .hero-gradient {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
+        }
+        
+        /* Scroll Reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Interactive Elements */
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .interactive-element:active {
+            transform: scale(0.98);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Small Hero Section -->
+    <header class="hero-gradient py-12 px-4">
+        <div class="container mx-auto">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.close()" class="interactive-element bg-white rounded-full p-3 shadow-md hover:shadow-lg">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-emerald-600"></i>
+                    </button>
+                    <div class="flex justify-between items-center mb-6">
+                <h1 class="heading-font text-2xl font-bold text-gray-800">Pembelajaran Keberlanjutan</h1>
+                <div class="flex items-center space-x-4">
+                    <button onclick="resetProgress()" class="text-sm bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors">
+                        <i class="fas fa-redo mr-1"></i>Reset Progress
+                    </button>
+                    <button onclick="clearAllData()" class="text-sm bg-gray-500 text-white px-3 py-1 rounded-full hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-trash mr-1"></i>Clear All
+                    </button>
+                </div>
+            </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Progres</p>
+                        <p class="heading-font font-bold text-emerald-600" id="progress-text">0%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="award" class="w-6 h-6 text-emerald-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Progress Bar -->
+    <section class="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-100">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Progres Pembelajaran</span>
+                <span class="text-sm font-medium text-emerald-600" id="progress-percentage">0% Selesai</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div class="flex h-full">
+                    <div class="progress-segment completed flex-1" data-lesson="1"></div>
+                    <div class="progress-segment flex-1 bg-gray-300" data-lesson="2"></div>
+                    <div class="progress-segment flex-1 bg-gray-300" data-lesson="3"></div>
+                    <div class="progress-segment flex-1 bg-gray-300" data-lesson="4"></div>
+                    <div class="progress-segment flex-1 bg-gray-300" data-lesson="5"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        
+        <!-- Lesson Cards Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            
+            <!-- Lesson 1 -->
+            <div class="lesson-card p-8 scroll-reveal" data-lesson-id="1">
+                <div class="card-icon w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="leaf" class="w-8 h-8 text-emerald-600"></i>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">Pelajaran 1</span>
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 hidden lesson-complete"></i>
+                </div>
+                <h3 class="heading-font text-xl font-bold text-gray-800 mb-3">Apa itu Keberlanjutan?</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Memahami konsep dasar keberlanjutan lingkungan dan peran kita dalam melindungi planet ini.
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">15 min</span>
+                    <button onclick="startLesson(1)" class="btn-eco text-white px-6 py-2 rounded-full font-medium interactive-element">
+                        Mulai Belajar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lesson 2 -->
+            <div class="lesson-card p-8 scroll-reveal" data-lesson-id="2">
+                <div class="card-icon w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="droplets" class="w-8 h-8 text-blue-600"></i>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">Pelajaran 2</span>
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 hidden lesson-complete"></i>
+                </div>
+                <h3 class="heading-font text-xl font-bold text-gray-800 mb-3">Konservasi Air</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Pelajari tentang kelangkaan air, teknik konservasi, dan bagaimana perubahan kecil dapat memberikan dampak besar.
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">20 min</span>
+                    <button onclick="startLesson(2)" class="btn-eco text-white px-6 py-2 rounded-full font-medium interactive-element locked" disabled>
+                        Selesaikan Sebelumnya
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lesson 3 -->
+            <div class="lesson-card p-8 scroll-reveal" data-lesson-id="3">
+                <div class="card-icon w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="sun" class="w-8 h-8 text-yellow-600"></i>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full">Pelajaran 3</span>
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 hidden lesson-complete"></i>
+                </div>
+                <h3 class="heading-font text-xl font-bold text-gray-800 mb-3">Energi Terbarukan</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Jelajahi energi matahari, angin, dan sumber energi terbarukan lainnya yang menggerakkan masa depan berkelanjutan kita.
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">25 min</span>
+                    <button onclick="startLesson(3)" class="btn-eco text-white px-6 py-2 rounded-full font-medium interactive-element locked" disabled>
+                        Selesaikan Sebelumnya
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lesson 4 -->
+            <div class="lesson-card p-8 scroll-reveal" data-lesson-id="4">
+                <div class="card-icon w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="recycle" class="w-8 h-8 text-purple-600"></i>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">Pelajaran 4</span>
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 hidden lesson-complete"></i>
+                </div>
+                <h3 class="heading-font text-xl font-bold text-gray-800 mb-3">Pengelolaan Limbah</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Kuasai seni mengurangi, menggunakan kembali, dan mendaur ulang untuk meminimalkan jejak lingkungan Anda.
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">18 min</span>
+                    <button onclick="startLesson(4)" class="btn-eco text-white px-6 py-2 rounded-full font-medium interactive-element locked" disabled>
+                        Selesaikan Sebelumnya
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lesson 5 -->
+            <div class="lesson-card p-8 scroll-reveal" data-lesson-id="5">
+                <div class="card-icon w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="heart" class="w-8 h-8 text-red-600"></i>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded-full">Pelajaran 5</span>
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 hidden lesson-complete"></i>
+                </div>
+                <h3 class="heading-font text-xl font-bold text-gray-800 mb-3">Gaya Hidup Berkelanjutan</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Temukan cara praktis untuk menggabungkan keberlanjutan dalam kehidupan sehari-hari dan menginspirasi orang lain.
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">22 min</span>
+                    <button onclick="startLesson(5)" class="btn-eco text-white px-6 py-2 rounded-full font-medium interactive-element locked" disabled>
+                        Selesaikan Sebelumnya
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Bonus Card -->
+            <div class="lesson-card p-8 scroll-reveal border-2 border-dashed border-emerald-300 bg-emerald-50">
+                <div class="card-icon w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="gift" class="w-8 h-8 text-white"></i>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Bonus</span>
+                    <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+                </div>
+                <h3 class="heading-font text-xl font-bold text-gray-800 mb-3">Sertifikasi Lanjutan</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Selesaikan semua pelajaran untuk membuka sertifikat dan lencana Juara Keberlanjutan resmi Anda.
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">30 min</span>
+                    <button class="bg-gray-300 text-gray-500 px-6 py-2 rounded-full font-medium cursor-not-allowed" disabled>
+                        Selesaikan Semua Terlebih Dahulu
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Achievement Section -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg scroll-reveal">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="trophy" class="w-10 h-10 text-white"></i>
+                </div>
+                <h2 class="heading-font text-2xl font-bold text-gray-800 mb-4">Perjalanan Pembelajaran Anda</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mb-8">
+                    Lacak progres Anda saat belajar tentang keberlanjutan. Setiap pelajaran membawa Anda lebih dekat untuk menjadi juara lingkungan.
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-emerald-600" id="lessons-completed">0</div>
+                        <div class="text-sm text-gray-600">Pelajaran Selesai</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600" id="time-spent">0</div>
+                        <div class="text-sm text-gray-600">Menit Belajar</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-600" id="achievements">0</div>
+                        <div class="text-sm text-gray-600">Pencapaian</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600" id="streak">0</div>
+                        <div class="text-sm text-gray-600">Streak Hari</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 transform scale-0 transition-transform duration-300" id="modal-content">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="check" class="w-10 h-10 text-emerald-600"></i>
+                </div>
+                <h3 class="heading-font text-2xl font-bold text-gray-800 mb-4">Pelajaran Selesai!</h3>
+                <p class="text-gray-600 mb-6">Kerja bagus! Anda telah berhasil menyelesaikan pelajaran ini dan siap untuk tantangan berikutnya.</p>
+                <button onclick="closeModal()" class="btn-eco text-white px-8 py-3 rounded-full font-medium w-full">
+                    Lanjutkan Belajar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Learning progress state
+        let completedLessons = new Set();
+        let currentLesson = 1;
+        let totalMinutes = 0;
+        
+        // Initialize scroll reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Start lesson function
+        function startLesson(lessonId) {
+            const button = event.target;
+            if (button.classList.contains('locked')) {
+                return;
+            }
+            
+            // Buka tab baru dengan materi pembelajaran (selalu bisa dibuka)
+            const lessonUrl = `materi.html?lesson=${lessonId}`;
+            window.open(lessonUrl, '_blank');
+            
+            // Update button status
+            const originalText = button.innerHTML;
+            
+            if (completedLessons.has(lessonId)) {
+                // Jika sudah selesai, tampilkan pesan berbeda
+                button.innerHTML = '<i class="fas fa-redo mr-2"></i>Baca Ulang...';
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-trophy mr-2"></i>Selesai';
+                    button.disabled = false;
+                }, 2000);
+            } else {
+                // Jika belum selesai, tampilkan pesan normal
+                button.innerHTML = '<i class="fas fa-external-link-alt mr-2"></i>Sedang Dibuka...';
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-play mr-2"></i>Mulai Belajar';
+                    button.disabled = false;
+                }, 2000);
+            }
+        }
+        
+        // Complete lesson function
+        function completeLesson(lessonId) {
+            completedLessons.add(lessonId);
+            
+            // Update card UI
+            const card = document.querySelector(`[data-lesson-id="${lessonId}"]`);
+            const completeIcon = card.querySelector('.lesson-complete');
+            const button = card.querySelector('button');
+            
+            completeIcon.classList.remove('hidden');
+            button.innerHTML = '<i class="fas fa-trophy mr-2"></i>Selesai';
+            button.classList.add('bg-gray-300', 'cursor-not-allowed');
+            button.classList.remove('btn-eco');
+            
+            // Update progress
+            updateProgress();
+            
+            // Unlock next lesson
+            if (lessonId < 5) {
+                unlockNextLesson(lessonId + 1);
+            }
+            
+            // Show success modal dengan konten yang lebih detail
+            showSuccessModal(lessonId);
+            
+            // Update stats
+            updateStats(lessonId);
+            
+            // Tambahkan achievement notification
+            showAchievementNotification(lessonId);
+        }
+        
+        // Unlock next lesson
+        function unlockNextLesson(nextLessonId) {
+            const nextCard = document.querySelector(`[data-lesson-id="${nextLessonId}"]`);
+            const nextButton = nextCard.querySelector('button');
+            
+            nextButton.textContent = 'Mulai Belajar';
+            nextButton.disabled = false;
+            nextButton.classList.remove('locked', 'bg-gray-300', 'cursor-not-allowed');
+            nextButton.classList.add('btn-eco');
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = (completedLessons.size / 5) * 100;
+            
+            // Update progress segments
+            for (let i = 1; i <= 5; i++) {
+                const segment = document.querySelector(`[data-lesson="${i}"]`);
+                if (completedLessons.has(i)) {
+                    segment.classList.add('completed');
+                    segment.classList.remove('bg-gray-300');
+                } else if (i === completedLessons.size + 1) {
+                    segment.classList.add('active');
+                    segment.classList.remove('bg-gray-300');
+                }
+            }
+            
+            // Update progress text
+            document.getElementById('progress-text').textContent = `${Math.round(progress)}%`;
+            document.getElementById('progress-percentage').textContent = `${Math.round(progress)}% Selesai`;
+        }
+        
+        // Update statistics
+        function updateStats(lessonId) {
+            const lessonDurations = [15, 20, 25, 18, 22];
+            const totalMinutes = lessonDurations.reduce((sum, duration, index) => {
+                return sum + (completedLessons.has(index + 1) ? duration : 0);
+            }, 0);
+            
+            document.getElementById('lessons-completed').textContent = completedLessons.size;
+            document.getElementById('time-spent').textContent = totalMinutes;
+            
+            // Update achievements (every 2 lessons)
+            document.getElementById('achievements').textContent = Math.floor(completedLessons.size / 2);
+            
+            // Update streak (simplified)
+            document.getElementById('streak').textContent = completedLessons.size;
+        }
+        
+        // Show success modal
+        function showSuccessModal(lessonId) {
+            const modal = document.getElementById('success-modal');
+            const modalContent = document.getElementById('modal-content');
+            const lessonTitles = [
+                'Apa itu Keberlanjutan?',
+                'Konservasi Air',
+                'Energi Terbarukan',
+                'Pengelolaan Limbah',
+                'Gaya Hidup Berkelanjutan'
+            ];
+            
+            // Update modal content berdasarkan lesson
+            modalContent.querySelector('h3').textContent = `Pelajaran ${lessonId} Selesai!`;
+            modalContent.querySelector('p').textContent = 
+                `Kerja bagus! Anda telah menyelesaikan "${lessonTitles[lessonId - 1]}" dan siap untuk tantangan berikutnya.`;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            setTimeout(() => {
+                modalContent.classList.remove('scale-0');
+                modalContent.classList.add('scale-100');
+            }, 100);
+        }
+        
+        // Achievement notification
+        function showAchievementNotification(lessonId) {
+            const achievements = [
+                '🌱 Pemula Hijau',
+                '💧 Penjaga Air',
+                '☀️ Master Energi',
+                '♻️ Guru Daur Ulang',
+                '🌍 Pejuang Lingkungan'
+            ];
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-white rounded-lg shadow-xl p-4 transform translate-x-full transition-transform duration-500 z-50';
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <div class="text-2xl">${achievements[lessonId - 1].split(' ')[0]}</div>
+                    <div>
+                        <div class="font-semibold text-gray-800">Achievement Unlocked!</div>
+                        <div class="text-sm text-gray-600">${achievements[lessonId - 1]}</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+                notification.classList.add('translate-x-0');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('translate-x-0');
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+        
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('success-modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+        
+        // Add micro-interactions
+        document.querySelectorAll('.interactive-element').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize completedLessons
+            window.completedLessons = new Set();
+            
+            // Re-initialize Lucide icons after DOM is loaded
+            lucide.createIcons();
+            
+            // Add initial animations
+            document.querySelectorAll('.fade-in').forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+            
+            // Check for completed lessons from localStorage
+            updateProgressFromStorage();
+            
+            // Listen for storage changes (cross-tab communication)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'lastCompletedLesson') {
+                    const lessonId = parseInt(e.newValue);
+                    if (lessonId) {
+                        completeLessonFromStorage(lessonId);
+                    }
+                }
+            });
+            
+            // Check immediately on load
+            const lastCompleted = localStorage.getItem('lastCompletedLesson');
+            if (lastCompleted) {
+                const lessonId = parseInt(lastCompleted);
+                completeLessonFromStorage(lessonId);
+                localStorage.removeItem('lastCompletedLesson'); // Clean up
+            }
+        });
+        
+        // Update progress from localStorage
+        function updateProgressFromStorage() {
+            const storedLessons = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+            console.log('Loading from storage:', storedLessons);
+            
+            storedLessons.forEach(lessonId => {
+                if (!completedLessons.has(lessonId)) {
+                    completedLessons.add(lessonId);
+                    console.log('Added to Set:', lessonId);
+                    updateLessonCard(lessonId);
+                }
+            });
+            
+            updateProgress();
+            updateStats(null);
+        }
+        
+        // Complete lesson from storage (called when materi.html completes)
+        function completeLessonFromStorage(lessonId) {
+            console.log('Completing lesson from storage:', lessonId);
+            
+            if (!completedLessons.has(lessonId)) {
+                completedLessons.add(lessonId);
+                console.log('Added to completedLessonsSet:', Array.from(completedLessons));
+                
+                updateLessonCard(lessonId);
+                updateProgress();
+                updateStats(null);
+                showAchievementNotification(lessonId);
+                
+                // Unlock next lesson
+                if (lessonId < 5) {
+                    console.log('Unlocking next lesson:', lessonId + 1);
+                    unlockNextLesson(lessonId + 1);
+                }
+            } else {
+                console.log('Lesson already completed:', lessonId);
+            }
+        }
+        
+        // Update lesson card UI
+        function updateLessonCard(lessonId) {
+            const card = document.querySelector(`[data-lesson-id="${lessonId}"]`);
+            if (card) {
+                const completeIcon = card.querySelector('.lesson-complete');
+                const button = card.querySelector('button');
+                
+                completeIcon.classList.remove('hidden');
+                button.innerHTML = '<i class="fas fa-trophy mr-2"></i>Selesai';
+                button.classList.add('bg-gray-300', 'cursor-not-allowed');
+                button.classList.remove('btn-eco');
+                button.disabled = true;
+            }
+        }
+        
+        // Reset progress function
+        function resetProgress() {
+            if (confirm('Apakah Anda yakin ingin mereset progress?')) {
+                localStorage.removeItem('completedLessons');
+                localStorage.removeItem('lastCompletedLesson');
+                location.reload();
+            }
+        }
+        
+        // Clear all data function
+        function clearAllData() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua data?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
